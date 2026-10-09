@@ -1070,8 +1070,12 @@
 
     // ============================================================
     // MÁSCARA DE MOEDA DINÂMICA (estilo caixa eletrônico)
+    // TRAVA: ignora o campo de % e os campos de período.
     // ============================================================
     function formatarMoeda(input) {
+        if (input.id === 'porcentagemInvestir') return;
+        if (input.classList.contains('period-input')) return;
+
         let digitos = input.value.replace(/\D/g, '');
         if (digitos === '') {
             input.value = '';
@@ -1386,6 +1390,12 @@
         });
 
         document.querySelectorAll('.period-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                setTimeout(() => {
+                    this.select();
+                }, 0);
+            });
+
             input.addEventListener('input', function() {
                 let key = this.getAttribute('data-key');
                 let val = parseInt(this.value);
@@ -1429,6 +1439,22 @@
 
         badgeInput.addEventListener('focus', () => {
             badgeInputFocused = true;
+            setTimeout(() => {
+                badgeInput.select();
+            }, 0);
+        });
+
+        badgeInput.addEventListener('input', () => {
+            let val = parseFloat(badgeInput.value);
+            if (isNaN(val)) val = 0;
+            val = Math.min(100, Math.max(0, val));
+
+            const data = getCurrentData();
+            data.pctBadge = val;
+
+            updateAllCalculations();
+            saveAllToLocal();
+            salvarDadosNaNuvem();
         });
 
         badgeInput.addEventListener('blur', () => {
@@ -1701,7 +1727,6 @@
 
     // ============================================================
     // SALVAR DADOS NA NUVEM (FIRESTORE)
-    // Mapeamento explícito de TODOS os campos reais do app.
     // ============================================================
     function salvarDadosNaNuvem() {
         if (!nuvemCarregada) return;
@@ -1777,7 +1802,6 @@
 
     // ============================================================
     // CARREGAR DADOS DA NUVEM (FIRESTORE)
-    // Mapeamento explícito de TODOS os campos reais do app.
     // ============================================================
     function carregarDadosDaNuvem() {
         return db.collection(COLECAO).doc(usuarioID).get()
