@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Markinhos - Controle Financeiro</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -169,6 +170,35 @@
             letter-spacing: 0.5px;
         }
         .header p { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+
+        .sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+            border: 1px solid transparent;
+        }
+        .sync-badge.syncing {
+            background: #FEF3C7;
+            color: #92400E;
+            border-color: #FCD34D;
+        }
+        .sync-badge.ok {
+            background: #DCFCE7;
+            color: #166534;
+            border-color: #86EFAC;
+        }
+        .sync-badge.error {
+            background: #FEE2E2;
+            color: #991B1B;
+            border-color: #FCA5A5;
+        }
 
         .card {
             background: var(--card-bg);
@@ -721,11 +751,12 @@
     <div class="header">
         <h1>⚡ MARKINHOS ⚡</h1>
         <p>👉 Digite o valor em REAIS (ex: 750) • Formata automático ao digitar</p>
+        <span class="sync-badge syncing" id="syncBadge">⏳ Conectando...</span>
     </div>
 
     <div class="month-nav">
         <button id="prevMonthBtn" title="Mês anterior"><i class="fas fa-chevron-left"></i></button>
-        <span class="month-label" id="monthLabel">Setembro/2026</span>
+        <span class="month-label" id="monthLabel">Outubro/2026</span>
         <button id="nextMonthBtn" title="Próximo mês"><i class="fas fa-chevron-right"></i></button>
         <button class="btn-new-month" id="newMonthBtn"><i class="fas fa-plus"></i> Novo Mês</button>
     </div>
@@ -933,7 +964,7 @@
         apiKey: "AIzaSyBxd8hBnfjqwskPrL8DjmciVAe9ARjzbk",
         authDomain: "planer-markinhos.firebaseapp.com",
         projectId: "planer-markinhos",
-        storageBucket: "planer-markinhos.appspot.com",
+        storageBucket: "planer-markinhos.firebasestorage.app",
         messagingSenderId: "262977184013",
         appId: "1:262977184013:web:b1e361d36519e061fc1044"
     };
@@ -962,6 +993,25 @@
     let badgeInputFocused = false;
     let nuvemCarregada = false;
     let timeoutSalvarNuvem = null;
+    let timeoutSyncOk = null;
+
+    // ============================================================
+    // INDICADOR VISUAL DE SINCRONIZAÇÃO
+    // ============================================================
+    function atualizarBadgeSync(estado, texto) {
+        const badge = document.getElementById('syncBadge');
+        if (!badge) return;
+        badge.classList.remove('syncing', 'ok', 'error');
+        badge.classList.add(estado);
+        badge.textContent = texto;
+
+        if (timeoutSyncOk) clearTimeout(timeoutSyncOk);
+        if (estado === 'ok') {
+            timeoutSyncOk = setTimeout(() => {
+                badge.textContent = '✅ Sincronizado';
+            }, 1000);
+        }
+    }
 
     // ============================================================
     // ESTRUTURA PADRÃO DE UM MÊS
@@ -1731,6 +1781,7 @@
     function salvarDadosNaNuvem() {
         if (!nuvemCarregada) return;
         if (timeoutSalvarNuvem) clearTimeout(timeoutSalvarNuvem);
+        atualizarBadgeSync('syncing', '⏳ Salvando...');
         timeoutSalvarNuvem = setTimeout(() => {
             const data = getCurrentData();
 
@@ -1793,9 +1844,11 @@
             db.collection(COLECAO).doc(usuarioID).set(dadosMes, { merge: true })
                 .then(() => {
                     console.log('☁️ Dados salvos no Firestore com sucesso. User:', usuarioID);
+                    atualizarBadgeSync('ok', '✅ Sincronizado');
                 })
                 .catch((error) => {
                     console.error('❌ Erro ao salvar no Firestore:', error);
+                    atualizarBadgeSync('error', '❌ Erro ao salvar');
                 });
         }, 500);
     }
@@ -1804,6 +1857,7 @@
     // CARREGAR DADOS DA NUVEM (FIRESTORE)
     // ============================================================
     function carregarDadosDaNuvem() {
+        atualizarBadgeSync('syncing', '⏳ Carregando...');
         return db.collection(COLECAO).doc(usuarioID).get()
             .then((doc) => {
                 if (doc.exists) {
@@ -1870,13 +1924,16 @@
 
                     saveAllToLocal();
                     console.log('☁️ Dados carregados do Firestore. User:', usuarioID);
+                    atualizarBadgeSync('ok', '✅ Sincronizado');
                 } else {
                     console.log('☁️ Nenhum dado na nuvem ainda para o User:', usuarioID);
+                    atualizarBadgeSync('ok', '✅ Sincronizado');
                 }
                 nuvemCarregada = true;
             })
             .catch((error) => {
                 console.error('❌ Erro ao carregar do Firestore:', error);
+                atualizarBadgeSync('error', '❌ Erro de conexão');
                 nuvemCarregada = true;
             });
     }
