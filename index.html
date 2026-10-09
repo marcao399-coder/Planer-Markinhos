@@ -41,7 +41,6 @@
             --xp: #0F0F0F;
         }
 
-        /* ============ NAVEGAÇÃO DE MÊS ============ */
         .month-nav {
             display: flex;
             justify-content: center;
@@ -103,7 +102,6 @@
             box-shadow: 0 2px 8px rgba(2,132,199,0.3);
         }
 
-        /* ============ BARRA DE AÇÕES (SALVAR / EXPORTAR / IMPORTAR) ============ */
         .actions-bar {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -131,9 +129,7 @@
             white-space: nowrap;
             border: 1px solid transparent;
         }
-        .action-btn i {
-            font-size: 13px;
-        }
+        .action-btn i { font-size: 13px; }
         .action-btn.save {
             background: var(--accent);
             color: #FFFFFF;
@@ -165,7 +161,6 @@
             box-shadow: 0 2px 8px rgba(2,132,199,0.3);
         }
 
-        /* ============ HEADER ============ */
         .header { text-align: center; margin-bottom: 22px; }
         .header h1 {
             font-size: 30px;
@@ -175,7 +170,6 @@
         }
         .header p { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
 
-        /* ============ CARDS ============ */
         .card {
             background: var(--card-bg);
             border-radius: 6px;
@@ -205,7 +199,6 @@
             white-space: nowrap;
         }
 
-        /* ============ INPUTS MONETÁRIOS ============ */
         .money-input {
             font-size: 14px;
             font-weight: 700;
@@ -225,7 +218,6 @@
             box-shadow: 0 0 0 3px rgba(2,132,199,0.12);
         }
 
-        /* ============ PAGAMENTOS ============ */
         .payments-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -261,7 +253,6 @@
             box-shadow: 0 0 0 3px rgba(2,132,199,0.12);
         }
 
-        /* ============ DESPESAS ============ */
         .expenses-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -311,7 +302,6 @@
             flex-shrink: 0;
         }
 
-        /* ============ CARRO ============ */
         .carro-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -447,7 +437,6 @@
         .resultado-carro.negativo span { color: var(--negative); }
         .resultado-carro.negativo strong { color: var(--negative); }
 
-        /* ============ INVESTIMENTOS ============ */
         .invest-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -546,7 +535,6 @@
             border-color: #FECACA;
         }
 
-        /* Badge de % editável */
         .pct-badge {
             display: inline-flex;
             align-items: center;
@@ -619,7 +607,6 @@
             color: var(--text-dim);
         }
 
-        /* ============ RESUMO ============ */
         .resumo-linha {
             display: flex;
             justify-content: space-between;
@@ -674,7 +661,6 @@
             margin-top: 24px;
         }
 
-        /* ============ RESPONSIVO ============ */
         @media (max-width: 900px) {
             .invest-grid { grid-template-columns: 1fr 1fr; }
         }
@@ -734,10 +720,9 @@
 <div class="container">
     <div class="header">
         <h1>⚡ MARKINHOS ⚡</h1>
-        <p>👉 Digite o valor em REAIS (ex: 750) • Formata automático ao sair do campo</p>
+        <p>👉 Digite o valor em REAIS (ex: 750) • Formata automático ao digitar</p>
     </div>
 
-    <!-- NAVEGAÇÃO DE MÊS -->
     <div class="month-nav">
         <button id="prevMonthBtn" title="Mês anterior"><i class="fas fa-chevron-left"></i></button>
         <span class="month-label" id="monthLabel">Setembro/2026</span>
@@ -745,7 +730,6 @@
         <button class="btn-new-month" id="newMonthBtn"><i class="fas fa-plus"></i> Novo Mês</button>
     </div>
 
-    <!-- BARRA DE AÇÕES (SALVAR / EXPORTAR / IMPORTAR) -->
     <div class="actions-bar">
         <button class="action-btn save" id="saveMonthBtn" title="Salvar mês atual">
             <i class="fas fa-save"></i> Salvar Mês
@@ -758,7 +742,6 @@
         </button>
     </div>
 
-    <!-- CARD PAGAMENTOS -->
     <div class="card">
         <div class="card-title">
             <i class="fas fa-money-bill-wave"></i>
@@ -767,24 +750,23 @@
         <div class="payments-grid">
             <div class="payment-cell">
                 <span class="payment-label">📌 Salário dia 5</span>
-                <input type="text" class="payment-value money-input" data-key="salario5" value="0,00">
+                <input type="text" id="salario5" class="payment-value money-input" data-key="salario5" value="0,00">
             </div>
             <div class="payment-cell">
                 <span class="payment-label">📌 Salário dia 20</span>
-                <input type="text" class="payment-value money-input" data-key="salario20" value="0,00">
+                <input type="text" id="salario20" class="payment-value money-input" data-key="salario20" value="0,00">
             </div>
             <div class="payment-cell">
                 <span class="payment-label">🎄 13º Salário</span>
-                <input type="text" class="payment-value money-input" data-key="decimoTerceiro" value="0,00">
+                <input type="text" id="decimoTerceiro" class="payment-value money-input" data-key="decimoTerceiro" value="0,00">
             </div>
             <div class="payment-cell">
                 <span class="payment-label">📌 Outra Renda</span>
-                <input type="text" class="payment-value money-input" data-key="outraRenda" value="0,00">
+                <input type="text" id="outraRenda" class="payment-value money-input" data-key="outraRenda" value="0,00">
             </div>
         </div>
     </div>
 
-    <!-- CARD DESPESAS -->
     <div class="card">
         <div class="card-title">
             <i class="fas fa-receipt"></i>
@@ -793,27 +775,26 @@
         </div>
         <div class="expenses-grid">
             <div class="expense-col">
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE1" value="Convênio médico"><input type="text" class="money-input" data-key="convenio" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE2" value="Energia elétrica"><input type="text" class="money-input" data-key="luz" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE3" value="Vivo TV + Internet"><input type="text" class="money-input" data-key="tvInternet" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE4" value="Pernambucanas"><input type="text" class="money-input" data-key="pernambucanas" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE5" value="Outra despesa 1"><input type="text" class="money-input" data-key="outra1" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE6" value="Outra despesa 2"><input type="text" class="money-input" data-key="outra2" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE7" value="Outra despesa 7"><input type="text" class="money-input" data-key="outra7" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE1" value="Convênio médico"><input type="text" id="convenio" class="money-input" data-key="convenio" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE2" value="Energia elétrica"><input type="text" id="energia" class="money-input" data-key="luz" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE3" value="Vivo TV + Internet"><input type="text" id="internet" class="money-input" data-key="tvInternet" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE4" value="Pernambucanas"><input type="text" id="pernambucanas" class="money-input" data-key="pernambucanas" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE5" value="Outra despesa 1"><input type="text" id="outraDespesa1" class="money-input" data-key="outra1" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE6" value="Outra despesa 2"><input type="text" id="outraDespesa2" class="money-input" data-key="outra2" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE7" value="Outra despesa 7"><input type="text" id="outraDespesa7" class="money-input" data-key="outra7" value="0,00"></div>
             </div>
             <div class="expense-col">
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD1" value="Shopping / Lojas"><input type="text" class="money-input" data-key="shopping" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD2" value="Farmácia / Saúde"><input type="text" class="money-input" data-key="saude" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD3" value="Outra despesa 3"><input type="text" class="money-input" data-key="outra3" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD4" value="Outra despesa 4"><input type="text" class="money-input" data-key="outra4" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD5" value="Outra despesa 5"><input type="text" class="money-input" data-key="outra5" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD6" value="Outra despesa 6"><input type="text" class="money-input" data-key="outra6" value="0,00"></div>
-                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD7" value="Outra despesa 8"><input type="text" class="money-input" data-key="outra8" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD1" value="Shopping / Lojas"><input type="text" id="shopping" class="money-input" data-key="shopping" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD2" value="Farmácia / Saúde"><input type="text" id="farmacia" class="money-input" data-key="saude" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD3" value="Outra despesa 3"><input type="text" id="outraDespesa3" class="money-input" data-key="outra3" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD4" value="Outra despesa 4"><input type="text" id="outraDespesa4" class="money-input" data-key="outra4" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD5" value="Outra despesa 5"><input type="text" id="outraDespesa5" class="money-input" data-key="outra5" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD6" value="Outra despesa 6"><input type="text" id="outraDespesa6" class="money-input" data-key="outra6" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD7" value="Outra despesa 8"><input type="text" id="outraDespesa8" class="money-input" data-key="outra8" value="0,00"></div>
             </div>
         </div>
     </div>
 
-    <!-- CARRO - DUAS COLUNAS -->
     <div class="carro-grid">
         <div class="card">
             <div class="card-title"><i class="fas fa-car"></i> 🚗 Plano de Manutenção Preventiva</div>
@@ -829,20 +810,20 @@
                 <tbody>
                     <tr>
                         <td style="font-size:11px;">Manut. (Óleo, freios, pneus e filtros)</td>
-                        <td><input type="text" class="money-input manut-custo" data-key="manutCusto" value="1.100,00"></td>
-                        <td><input type="number" class="period-input" data-key="manutPeriod" value="12" min="1"></td>
+                        <td><input type="text" id="custoOleo" class="money-input manut-custo" data-key="manutCusto" value="1.100,00"></td>
+                        <td><input type="number" id="periodOleo" class="period-input" data-key="manutPeriod" value="12" min="1"></td>
                         <td class="proporcional" id="manutProporcional">R$ 0,00</td>
                     </tr>
                     <tr>
                         <td style="font-size:11px;">Seguro (Valor total anual)</td>
-                        <td><input type="text" class="money-input seguro-custo" data-key="seguroCusto" value="1.300,00"></td>
-                        <td><input type="number" class="period-input" data-key="seguroPeriod" value="12" min="1"></td>
+                        <td><input type="text" id="custoSeguro" class="money-input seguro-custo" data-key="seguroCusto" value="1.300,00"></td>
+                        <td><input type="number" id="periodSeguro" class="period-input" data-key="seguroPeriod" value="12" min="1"></td>
                         <td class="proporcional" id="seguroProporcional">R$ 0,00</td>
                     </tr>
                     <tr>
                         <td style="font-size:11px;">Taxas Licenciamento anual</td>
-                        <td><input type="text" class="money-input taxas-custo" data-key="taxasCusto" value="174,00"></td>
-                        <td><input type="number" class="period-input" data-key="taxasPeriod" value="12" min="1"></td>
+                        <td><input type="text" id="custoTaxas" class="money-input taxas-custo" data-key="taxasCusto" value="174,00"></td>
+                        <td><input type="number" id="periodTaxas" class="period-input" data-key="taxasPeriod" value="12" min="1"></td>
                         <td class="proporcional" id="taxasProporcional">R$ 0,00</td>
                     </tr>
                 </tbody>
@@ -857,11 +838,11 @@
             <div class="card-title"><i class="fas fa-gas-pump"></i> 💸 Custos Mensais do Carro</div>
             <div class="carro-custos-item">
                 <span>💰 Ajuda de Custo Mensal</span>
-                <input type="text" class="money-input" data-key="ajudaCusto" value="234,00">
+                <input type="text" id="ajudaCusto" class="money-input" data-key="ajudaCusto" value="234,00">
             </div>
             <div class="carro-custos-item">
                 <span>⛽ Gasto no Mês Comb.</span>
-                <input type="text" class="money-input" data-key="gastoComb" value="175,00">
+                <input type="text" id="gastoCombustivel" class="money-input" data-key="gastoComb" value="175,00">
             </div>
             <div class="resultado-carro" id="sobraCarroBox">
                 <span>📊 Sobra:</span>
@@ -874,7 +855,6 @@
         </div>
     </div>
 
-    <!-- INVESTIMENTOS -->
     <div class="card">
         <div class="card-title"><i class="fas fa-piggy-bank"></i> 💰 Investimentos e Reservas</div>
 
@@ -882,7 +862,7 @@
             <div class="total-left">
                 <span class="total-label">💵 Total a investir neste mês</span>
                 <span class="pct-badge" title="% das receitas que vai investir">
-                    <input type="number" id="pctBadgeInput" min="0" max="100" step="0.01" value="0">
+                    <input type="number" id="porcentagemInvestir" min="0" max="100" step="0.01" value="0">
                     <span class="pct-sign">%</span>
                 </span>
             </div>
@@ -892,25 +872,25 @@
         <div class="invest-grid">
             <div class="invest-card nubank" id="cardNubank">
                 <div class="bank-name"><i class="fas fa-university"></i> Nubank</div>
-                <input type="text" class="money-input" data-key="aporteNubank" value="0,00">
+                <input type="text" id="nubank" class="money-input" data-key="aporteNubank" value="0,00">
                 <div class="aporte-label">Aporte do mês</div>
             </div>
 
             <div class="invest-card itau" id="cardItau">
                 <div class="bank-name"><i class="fas fa-university"></i> Itaú</div>
-                <input type="text" class="money-input" data-key="aporteItau" value="0,00">
+                <input type="text" id="itau" class="money-input" data-key="aporteItau" value="0,00">
                 <div class="aporte-label">Aporte do mês</div>
             </div>
 
             <div class="invest-card santander" id="cardSantander">
                 <div class="bank-name"><i class="fas fa-university"></i> Santander</div>
-                <input type="text" class="money-input" data-key="aporteSantander" value="0,00">
+                <input type="text" id="santander" class="money-input" data-key="aporteSantander" value="0,00">
                 <div class="aporte-label">Aporte do mês</div>
             </div>
 
             <div class="invest-card xp" id="cardXP">
                 <div class="bank-name"><i class="fas fa-chart-line"></i> XP Invest</div>
-                <input type="text" class="money-input" data-key="aporteXP" value="0,00">
+                <input type="text" id="xp" class="money-input" data-key="aporteXP" value="0,00">
                 <div class="aporte-label">Aporte do mês</div>
             </div>
         </div>
@@ -925,7 +905,6 @@
         </div>
     </div>
 
-    <!-- RESUMO -->
     <div class="card">
         <div class="card-title"><i class="fas fa-chart-line"></i> 📋 Resumo do Mês Atual</div>
         <div class="resumo-linha"><span>📥 Total de Entradas</span><strong id="totalReceitas">R$ 0,00</strong></div>
@@ -938,15 +917,43 @@
         </div>
     </div>
 
-    <!-- Input file escondido para importação -->
     <input type="file" id="importFileInput" accept=".json,application/json" style="display:none;">
 
-    <footer>💡 Digite o número em REAIS (ex: 750) • Ao sair do campo, formata para 750,00 • Cursor não pula mais</footer>
+    <footer>💡 Digite o número em REAIS (ex: 750) • Formata em tempo real • Dados salvos na nuvem automaticamente</footer>
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <script>
     // ============================================================
-    // ESTADO ATUAL
+    // CONFIGURAÇÃO DO FIREBASE
+    // Troque os placeholders pelas credenciais do seu projeto.
+    // ============================================================
+    const firebaseConfig = {
+        apiKey: "SUA_API_KEY_AQUI",
+        authDomain: "SEU_PROJETO.firebaseapp.com",
+        projectId: "planer-markinhos",
+        storageBucket: "SEU_PROJETO.appspot.com",
+        messagingSenderId: "1234567890",
+        appId: "1:12345678:web:abcd1234"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ============================================================
+    // ID ÚNICO DO USUÁRIO (isolamento por aparelho, sem login)
+    // ============================================================
+    let usuarioID = localStorage.getItem('usuario_nuvem_id');
+    if (!usuarioID) {
+        usuarioID = 'user_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('usuario_nuvem_id', usuarioID);
+    }
+    const COLECAO = 'controles_financeiros';
+
+    // ============================================================
+    // ESTADO GLOBAL
     // ============================================================
     const MONTHS_PT = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
@@ -954,7 +961,12 @@
     let allMonthsData = {};
     let avisoTimeout = null;
     let badgeInputFocused = false;
+    let nuvemCarregada = false;
+    let timeoutSalvarNuvem = null;
 
+    // ============================================================
+    // ESTRUTURA PADRÃO DE UM MÊS
+    // ============================================================
     function getDefaultMonthData() {
         return {
             salario5: 0,
@@ -1058,6 +1070,27 @@
     }
 
     // ============================================================
+    // MÁSCARA DE MOEDA DINÂMICA (estilo caixa eletrônico)
+    // ============================================================
+    function formatarMoeda(input) {
+        let digitos = input.value.replace(/\D/g, '');
+        if (digitos === '') {
+            input.value = '';
+            return;
+        }
+        digitos = digitos.substring(0, 13);
+        while (digitos.length < 3) {
+            digitos = '0' + digitos;
+        }
+        let centavos = digitos.slice(-2);
+        let reais = digitos.slice(0, -2);
+        reais = reais.replace(/^0+(?=\d)/, '');
+        if (reais === '') reais = '0';
+        let reaisFormatado = parseInt(reais, 10).toLocaleString('pt-BR');
+        input.value = `${reaisFormatado},${centavos}`;
+    }
+
+    // ============================================================
     // CÁLCULOS DO CARRO
     // ============================================================
     function getProporcional(data, custoKey, periodKey) {
@@ -1120,7 +1153,6 @@
         return getSobraCents(data) - getInvestidoCents(data);
     }
 
-    // Total a investir = receitas × pctBadge
     function getTotalAlvoCents(data) {
         const receitas = getTotalReceitasCents(data);
         const pct = data.pctBadge || 0;
@@ -1128,7 +1160,7 @@
     }
 
     // ============================================================
-    // TRAVA DE INVESTIMENTOS (trava no TOTAL ALVO, não na sobra)
+    // TRAVA DE INVESTIMENTOS
     // ============================================================
     function mostrarAviso(texto) {
         const aviso = document.getElementById('avisoInvest');
@@ -1210,11 +1242,9 @@
             reservaSobraBox.classList.remove('negativo');
         }
 
-        // Total Gasto no título do card de Despesas
         const totalGasto = getDespesasFixasCents(data);
         document.getElementById('totalGastoTitle').textContent = `Total Gasto: R$ ${centsToDisplay(totalGasto)}`;
 
-        // Investimentos
         const investido = getInvestidoCents(data);
         const alvo = getTotalAlvoCents(data);
         const sobraNaoInvestida = getSobraNaoInvestidaCents(data);
@@ -1227,23 +1257,20 @@
             totalBox.classList.remove('estourado');
         }
 
-        // Badge só atualiza o display se não estiver em foco
         if (!badgeInputFocused) {
-            const badgeInput = document.getElementById('pctBadgeInput');
+            const badgeInput = document.getElementById('porcentagemInvestir');
             const pct = data.pctBadge || 0;
             badgeInput.value = pct;
         }
 
-        // Sugestão 50/30/20 em cima do alvo, em CINZA
         const v50 = Math.round(alvo * 0.50);
-        const vInv = alvo; // o item "Investimentos" mostra o total alvo
+        const vInv = alvo;
         const v20 = Math.round(alvo * 0.20);
         document.getElementById('sug50').textContent = `R$ ${centsToDisplay(v50)}`;
         document.getElementById('sug30').textContent = `R$ ${centsToDisplay(vInv)}`;
         document.getElementById('sugPctInvest').textContent = (data.pctBadge || 0);
         document.getElementById('sug20').textContent = `R$ ${centsToDisplay(v20)}`;
 
-        // Divisão sugerida do valor de Investimentos por 4 (apenas visual, em parênteses)
         const valorBase = Math.floor(vInv / 4);
         const sobraCentavos = vInv - (valorBase * 4);
         const vNubank = valorBase;
@@ -1305,7 +1332,7 @@
             }
         });
 
-        document.getElementById('pctBadgeInput').value = data.pctBadge || 0;
+        document.getElementById('porcentagemInvestir').value = data.pctBadge || 0;
 
         document.getElementById('monthLabel').textContent = formatMonthLabel(currentMonthKey);
     }
@@ -1315,13 +1342,23 @@
     // ============================================================
     function setupMoneyInputs() {
         document.querySelectorAll('.money-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                setTimeout(() => {
+                    this.select();
+                }, 0);
+            });
+
             input.addEventListener('keydown', function(e) {
-                const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'Home', 'End', ',', '-'];
+                const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'Home', 'End'];
                 if (allowed.includes(e.key)) return;
                 if (e.ctrlKey || e.metaKey) return;
                 if (!/^[0-9]$/.test(e.key)) {
                     e.preventDefault();
                 }
+            });
+
+            input.addEventListener('input', function() {
+                formatarMoeda(this);
             });
 
             input.addEventListener('blur', function() {
@@ -1345,6 +1382,7 @@
 
                 updateAllCalculations();
                 saveAllToLocal();
+                salvarDadosNaNuvem();
             });
         });
 
@@ -1362,6 +1400,7 @@
                 }
                 updateAllCalculations();
                 saveAllToLocal();
+                salvarDadosNaNuvem();
             });
         });
     }
@@ -1377,6 +1416,7 @@
                 if (key) {
                     data[key] = this.value;
                     saveAllToLocal();
+                    salvarDadosNaNuvem();
                 }
             });
         });
@@ -1386,7 +1426,7 @@
     // EVENTOS DO BADGE DE %
     // ============================================================
     function setupBadgeInput() {
-        const badgeInput = document.getElementById('pctBadgeInput');
+        const badgeInput = document.getElementById('porcentagemInvestir');
 
         badgeInput.addEventListener('focus', () => {
             badgeInputFocused = true;
@@ -1405,6 +1445,7 @@
 
             updateAllCalculations();
             saveAllToLocal();
+            salvarDadosNaNuvem();
         });
 
         badgeInput.addEventListener('keydown', (e) => {
@@ -1436,6 +1477,7 @@
             fillInputsFromData();
             updateAllCalculations();
             saveAllToLocal();
+            salvarDadosNaNuvem();
         }
 
         document.getElementById('prevMonthBtn').addEventListener('click', () => {
@@ -1470,12 +1512,13 @@
     function setupSaveButton() {
         document.getElementById('saveMonthBtn').addEventListener('click', () => {
             saveAllToLocal();
+            salvarDadosNaNuvem();
             alert(`✅ Mês ${formatMonthLabel(currentMonthKey)} salvo!`);
         });
     }
 
     // ============================================================
-    // EXPORTAR DADOS (BACKUP) — Mesmo formato do LocalStorage
+    // EXPORTAR DADOS
     // ============================================================
     function setupExportButton() {
         document.getElementById('exportBtn').addEventListener('click', () => {
@@ -1484,7 +1527,8 @@
 
                 const backup = {
                     markinhos_months: allMonthsData,
-                    markinhos_current: currentMonthKey
+                    markinhos_current: currentMonthKey,
+                    usuario_nuvem_id: usuarioID
                 };
 
                 const jsonString = JSON.stringify(backup, null, 2);
@@ -1519,7 +1563,7 @@
     }
 
     // ============================================================
-    // IMPORTAR DADOS (BACKUP) — Lê o arquivo e joga no LocalStorage
+    // IMPORTAR DADOS
     // ============================================================
     function setupImportButton() {
         const importBtn = document.getElementById('importBtn');
@@ -1615,7 +1659,7 @@
         try {
             localStorage.setItem('markinhos_months', JSON.stringify(allMonthsData));
             localStorage.setItem('markinhos_current', currentMonthKey);
-        } catch (e) { /* ignora */ }
+        } catch (e) { }
     }
 
     function loadAllFromLocal() {
@@ -1628,7 +1672,7 @@
             if (savedCurrent && allMonthsData[savedCurrent]) {
                 currentMonthKey = savedCurrent;
             }
-        } catch (e) { /* ignora */ }
+        } catch (e) { }
 
         if (!currentMonthKey) {
             const now = new Date();
@@ -1657,6 +1701,164 @@
     }
 
     // ============================================================
+    // SALVAR DADOS NA NUVEM (FIRESTORE)
+    // Mapeamento explícito de TODOS os campos reais do app.
+    // ============================================================
+    function salvarDadosNaNuvem() {
+        if (!nuvemCarregada) return;
+        if (timeoutSalvarNuvem) clearTimeout(timeoutSalvarNuvem);
+        timeoutSalvarNuvem = setTimeout(() => {
+            const data = getCurrentData();
+
+            const dadosMes = {
+                salarioDia5: data.salario5 || 0,
+                salarioDia20: data.salario20 || 0,
+                decimoTerceiro: data.decimoTerceiro || 0,
+                outraRenda: data.outraRenda || 0,
+
+                convenio: data.convenio || 0,
+                energia: data.luz || 0,
+                internet: data.tvInternet || 0,
+                pernambucanas: data.pernambucanas || 0,
+                shopping: data.shopping || 0,
+                farmacia: data.saude || 0,
+                outraDespesa1: data.outra1 || 0,
+                outraDespesa2: data.outra2 || 0,
+                outraDespesa3: data.outra3 || 0,
+                outraDespesa4: data.outra4 || 0,
+                outraDespesa5: data.outra5 || 0,
+                outraDespesa6: data.outra6 || 0,
+                outraDespesa7: data.outra7 || 0,
+                outraDespesa8: data.outra8 || 0,
+
+                labelE1: data.labelE1 || '',
+                labelE2: data.labelE2 || '',
+                labelE3: data.labelE3 || '',
+                labelE4: data.labelE4 || '',
+                labelE5: data.labelE5 || '',
+                labelE6: data.labelE6 || '',
+                labelE7: data.labelE7 || '',
+                labelD1: data.labelD1 || '',
+                labelD2: data.labelD2 || '',
+                labelD3: data.labelD3 || '',
+                labelD4: data.labelD4 || '',
+                labelD5: data.labelD5 || '',
+                labelD6: data.labelD6 || '',
+                labelD7: data.labelD7 || '',
+
+                custoOleo: data.manutCusto || 0,
+                periodOleo: data.manutPeriod || 12,
+                custoSeguro: data.seguroCusto || 0,
+                periodSeguro: data.seguroPeriod || 12,
+                custoTaxas: data.taxasCusto || 0,
+                periodTaxas: data.taxasPeriod || 12,
+                ajudaCusto: data.ajudaCusto || 0,
+                gastoCombustivel: data.gastoComb || 0,
+
+                porcentagemInvestir: data.pctBadge || 0,
+                nubank: data.aporteNubank || 0,
+                itau: data.aporteItau || 0,
+                santander: data.aporteSantander || 0,
+                xp: data.aporteXP || 0,
+
+                currentMonthKey: currentMonthKey,
+                monthsData: allMonthsData,
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection(COLECAO).doc(usuarioID).set(dadosMes, { merge: true })
+                .then(() => {
+                    console.log('☁️ Dados salvos no Firestore com sucesso. User:', usuarioID);
+                })
+                .catch((error) => {
+                    console.error('❌ Erro ao salvar no Firestore:', error);
+                });
+        }, 500);
+    }
+
+    // ============================================================
+    // CARREGAR DADOS DA NUVEM (FIRESTORE)
+    // Mapeamento explícito de TODOS os campos reais do app.
+    // ============================================================
+    function carregarDadosDaNuvem() {
+        return db.collection(COLECAO).doc(usuarioID).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const dados = doc.data();
+
+                    if (dados && dados.monthsData && typeof dados.monthsData === 'object') {
+                        allMonthsData = dados.monthsData;
+                    }
+                    if (dados && dados.currentMonthKey && allMonthsData[dados.currentMonthKey]) {
+                        currentMonthKey = dados.currentMonthKey;
+                    }
+
+                    const data = getCurrentData();
+
+                    if (dados.salarioDia5 !== undefined) data.salario5 = dados.salarioDia5;
+                    if (dados.salarioDia20 !== undefined) data.salario20 = dados.salarioDia20;
+                    if (dados.decimoTerceiro !== undefined) data.decimoTerceiro = dados.decimoTerceiro;
+                    if (dados.outraRenda !== undefined) data.outraRenda = dados.outraRenda;
+
+                    if (dados.convenio !== undefined) data.convenio = dados.convenio;
+                    if (dados.energia !== undefined) data.luz = dados.energia;
+                    if (dados.internet !== undefined) data.tvInternet = dados.internet;
+                    if (dados.pernambucanas !== undefined) data.pernambucanas = dados.pernambucanas;
+                    if (dados.shopping !== undefined) data.shopping = dados.shopping;
+                    if (dados.farmacia !== undefined) data.saude = dados.farmacia;
+                    if (dados.outraDespesa1 !== undefined) data.outra1 = dados.outraDespesa1;
+                    if (dados.outraDespesa2 !== undefined) data.outra2 = dados.outraDespesa2;
+                    if (dados.outraDespesa3 !== undefined) data.outra3 = dados.outraDespesa3;
+                    if (dados.outraDespesa4 !== undefined) data.outra4 = dados.outraDespesa4;
+                    if (dados.outraDespesa5 !== undefined) data.outra5 = dados.outraDespesa5;
+                    if (dados.outraDespesa6 !== undefined) data.outra6 = dados.outraDespesa6;
+                    if (dados.outraDespesa7 !== undefined) data.outra7 = dados.outraDespesa7;
+                    if (dados.outraDespesa8 !== undefined) data.outra8 = dados.outraDespesa8;
+
+                    if (dados.labelE1 !== undefined) data.labelE1 = dados.labelE1;
+                    if (dados.labelE2 !== undefined) data.labelE2 = dados.labelE2;
+                    if (dados.labelE3 !== undefined) data.labelE3 = dados.labelE3;
+                    if (dados.labelE4 !== undefined) data.labelE4 = dados.labelE4;
+                    if (dados.labelE5 !== undefined) data.labelE5 = dados.labelE5;
+                    if (dados.labelE6 !== undefined) data.labelE6 = dados.labelE6;
+                    if (dados.labelE7 !== undefined) data.labelE7 = dados.labelE7;
+                    if (dados.labelD1 !== undefined) data.labelD1 = dados.labelD1;
+                    if (dados.labelD2 !== undefined) data.labelD2 = dados.labelD2;
+                    if (dados.labelD3 !== undefined) data.labelD3 = dados.labelD3;
+                    if (dados.labelD4 !== undefined) data.labelD4 = dados.labelD4;
+                    if (dados.labelD5 !== undefined) data.labelD5 = dados.labelD5;
+                    if (dados.labelD6 !== undefined) data.labelD6 = dados.labelD6;
+                    if (dados.labelD7 !== undefined) data.labelD7 = dados.labelD7;
+
+                    if (dados.custoOleo !== undefined) data.manutCusto = dados.custoOleo;
+                    if (dados.periodOleo !== undefined) data.manutPeriod = dados.periodOleo;
+                    if (dados.custoSeguro !== undefined) data.seguroCusto = dados.custoSeguro;
+                    if (dados.periodSeguro !== undefined) data.seguroPeriod = dados.periodSeguro;
+                    if (dados.custoTaxas !== undefined) data.taxasCusto = dados.custoTaxas;
+                    if (dados.periodTaxas !== undefined) data.taxasPeriod = dados.periodTaxas;
+                    if (dados.ajudaCusto !== undefined) data.ajudaCusto = dados.ajudaCusto;
+                    if (dados.gastoCombustivel !== undefined) data.gastoComb = dados.gastoCombustivel;
+
+                    if (dados.porcentagemInvestir !== undefined) data.pctBadge = dados.porcentagemInvestir;
+                    if (dados.nubank !== undefined) data.aporteNubank = dados.nubank;
+                    if (dados.itau !== undefined) data.aporteItau = dados.itau;
+                    if (dados.santander !== undefined) data.aporteSantander = dados.santander;
+                    if (dados.xp !== undefined) data.aporteXP = dados.xp;
+
+                    saveAllToLocal();
+                    console.log('☁️ Dados carregados do Firestore. User:', usuarioID);
+                } else {
+                    console.log('☁️ Nenhum dado na nuvem ainda para o User:', usuarioID);
+                }
+                nuvemCarregada = true;
+            })
+            .catch((error) => {
+                console.error('❌ Erro ao carregar do Firestore:', error);
+                nuvemCarregada = true;
+            });
+    }
+
+    // ============================================================
     // INICIALIZAÇÃO
     // ============================================================
     function init() {
@@ -1672,7 +1874,13 @@
         updateAllCalculations();
     }
 
-    init();
+    window.onload = function() {
+        init();
+        carregarDadosDaNuvem().then(() => {
+            fillInputsFromData();
+            updateAllCalculations();
+        });
+    };
 </script>
 </body>
 </html>
