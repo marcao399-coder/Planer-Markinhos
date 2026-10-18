@@ -1,48 +1,48 @@
-// Service Worker para Finanças Casal
-const CACHE_NAME = 'financas-casal-v1';
-const urlsToCache = [
-  '/financas-casal/',
-  '/financas-casal/index.html',
-  '/financas-casal/manifest.json'
+const CACHE_NAME = 'planer-cache-v2'; // Mudei para v2 para forçar a atualização
+const ASSETS = [
+  './',
+  'index.html',
+  'manifest.json',
+  'icon-192.png',
+  'icon-512.png'
 ];
 
-// Instalação
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Cache aberto');
-        return cache.addAll(urlsToCache);
-      })
+// Instala o Service Worker e armazena os arquivos em cache
+self.addEventListener('install', (e) => {
+  self.skipWaiting(); // Força o novo SW a assumir o controle imediatamente
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
   );
 });
 
-// Interceptar requisições
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - retorna resposta do cache
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
-  );
-});
-
-// Atualizar cache quando novo service worker ativar
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
+// Ativa o Worker e limpa caches antigos
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Removendo cache antigo:', cacheName);
-            return caches.delete(cacheName);
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key); // Deleta o cache antigo (v1)
           }
         })
       );
+    }).then(() => self.clients.claim()) // Assume o controle das abas abertas
+  );
+});
+
+// Estratégia de Cache: Cache First com atualização em segundo plano
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((cachedResponse) => {
+      const fetchPromise = fetch(e.request).then((networkResponse) => {
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(e.request, networkResponse.clone());
+        });
+        return networkResponse;
+      });
+      return cachedResponse || fetchPromise;
     })
   );
 });
