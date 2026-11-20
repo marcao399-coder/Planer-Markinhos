@@ -1,0 +1,1979 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Markinhos - Controle Financeiro</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F1F5F9;
+            padding: 20px 16px 40px;
+            color: #1E293B;
+            min-height: 100vh;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        :root {
+            --bg-page: #F1F5F9;
+            --card-bg: #FFFFFF;
+            --card-bg-soft: #F8FAFC;
+            --border: #E2E8F0;
+            --border-strong: #CBD5E1;
+            --accent: #0284C7;
+            --accent-dark: #0369A1;
+            --accent-light: #F0F9FF;
+            --green: #15803D;
+            --green-dark: #166534;
+            --green-light: #F0FDF4;
+            --negative: #B91C1C;
+            --negative-light: #FEF2F2;
+            --text-main: #1E293B;
+            --text-muted: #475569;
+            --text-dim: #64748B;
+            --shadow: 0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06);
+            --radius: 6px;
+            --nubank: #8A05BE;
+            --itau: #EC7000;
+            --santander: #EC0000;
+            --xp: #0F0F0F;
+        }
+
+        .month-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+            background: var(--card-bg);
+            padding: 12px 18px;
+            border-radius: 6px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .month-nav button {
+            background: #FFFFFF;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            width: 42px;
+            height: 42px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .month-nav button:hover {
+            background: var(--accent);
+            color: #FFFFFF;
+            box-shadow: 0 2px 6px rgba(2,132,199,0.25);
+        }
+        .month-nav .month-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            min-width: 190px;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        .month-nav .btn-new-month {
+            background: var(--accent);
+            color: #FFFFFF;
+            border: 1px solid var(--accent);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            width: auto;
+            height: auto;
+            white-space: nowrap;
+        }
+        .month-nav .btn-new-month:hover {
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
+            box-shadow: 0 2px 8px rgba(2,132,199,0.3);
+        }
+
+        .actions-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+            background: var(--card-bg);
+            padding: 12px 18px;
+            border-radius: 6px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+        .action-btn i { font-size: 13px; }
+        .action-btn.save {
+            background: var(--accent);
+            color: #FFFFFF;
+            border-color: var(--accent);
+        }
+        .action-btn.save:hover {
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
+            box-shadow: 0 2px 8px rgba(2,132,199,0.3);
+        }
+        .action-btn.export {
+            background: #FFFFFF;
+            color: var(--green);
+            border-color: var(--green);
+        }
+        .action-btn.export:hover {
+            background: var(--green);
+            color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(21,128,61,0.3);
+        }
+        .action-btn.import {
+            background: #FFFFFF;
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        .action-btn.import:hover {
+            background: var(--accent);
+            color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(2,132,199,0.3);
+        }
+
+        .header { text-align: center; margin-bottom: 22px; }
+        .header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+        .header p { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+
+        .sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+            border: 1px solid transparent;
+        }
+        .sync-badge.syncing {
+            background: #FEF3C7;
+            color: #92400E;
+            border-color: #FCD34D;
+        }
+        .sync-badge.ok {
+            background: #DCFCE7;
+            color: #166534;
+            border-color: #86EFAC;
+        }
+        .sync-badge.error {
+            background: #FEE2E2;
+            color: #991B1B;
+            border-color: #FCA5A5;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 3px solid var(--accent);
+            padding-left: 14px;
+            color: var(--text-main);
+            letter-spacing: 0.2px;
+        }
+        .card-title i { color: var(--accent); }
+        .card-title .title-text { flex: 1; }
+        .card-title .title-right {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .money-input {
+            font-size: 14px;
+            font-weight: 700;
+            background: #FFFFFF;
+            padding: 7px 10px;
+            border-radius: 6px;
+            width: 120px;
+            text-align: center;
+            border: 1px solid var(--border-strong);
+            color: var(--text-main);
+            font-family: 'Inter', monospace;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .money-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(2,132,199,0.12);
+        }
+
+        .payments-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .payment-cell {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            gap: 10px;
+        }
+        .payment-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .payment-value {
+            font-size: 15px;
+            font-weight: 700;
+            background: #FFFFFF;
+            padding: 7px 14px;
+            border-radius: 6px;
+            width: 140px;
+            text-align: center;
+            border: 1px solid var(--border-strong);
+            font-family: 'Inter', monospace;
+            color: var(--green);
+        }
+        .payment-value:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(2,132,199,0.12);
+        }
+
+        .expenses-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .expense-col {
+            background: var(--card-bg-soft);
+            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid var(--border);
+        }
+        .expense-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            gap: 8px;
+        }
+        .expense-row:last-child { border-bottom: none; }
+        .expense-label-input {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            padding: 4px 6px;
+            flex: 1;
+            min-width: 0;
+            font-family: 'Inter', sans-serif;
+            transition: border 0.2s, background 0.2s;
+        }
+        .expense-label-input:hover {
+            border-color: var(--border);
+            background: #FFFFFF;
+        }
+        .expense-label-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(2,132,199,0.12);
+        }
+        .expense-row .money-input {
+            width: 110px;
+            color: var(--negative);
+            flex-shrink: 0;
+        }
+
+        .carro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .carro-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        .carro-table th {
+            background: var(--card-bg-soft);
+            font-weight: 700;
+            padding: 8px 6px;
+            text-align: left;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-strong);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .carro-table td {
+            padding: 8px 6px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+        .carro-table .money-input {
+            width: 95px;
+            font-size: 12px;
+            padding: 5px 6px;
+            border-radius: 6px;
+        }
+        .carro-table .proporcional {
+            font-weight: 700;
+            color: var(--green);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        .period-input {
+            width: 55px;
+            padding: 4px 6px;
+            border-radius: 6px;
+            border: 1px solid var(--border-strong);
+            background: #FFFFFF;
+            color: var(--text-main);
+            font-weight: 700;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Inter', monospace;
+        }
+        .period-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(2,132,199,0.12);
+        }
+        .reserva-mensal-box {
+            background: var(--card-bg-soft);
+            border-radius: 6px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+            margin-top: 8px;
+        }
+        .reserva-mensal-box span {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .reserva-mensal-box strong {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .carro-custos-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            gap: 8px;
+        }
+        .carro-custos-item:last-child { border-bottom: none; }
+        .carro-custos-item span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .carro-custos-item .money-input {
+            width: 120px;
+            font-size: 13px;
+            padding: 6px 8px;
+            color: var(--negative);
+        }
+        .resultado-carro {
+            background: var(--card-bg-soft);
+            border-radius: 6px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            border: 1px solid var(--border);
+        }
+        .resultado-carro span {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .resultado-carro strong {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .resultado-carro.destaque {
+            background: var(--green-light);
+            border-color: #BBF7D0;
+        }
+        .resultado-carro.destaque span { color: var(--green-dark); }
+        .resultado-carro.destaque strong {
+            color: var(--green-dark);
+            font-size: 20px;
+        }
+        .resultado-carro.negativo {
+            background: var(--negative-light);
+            border-color: #FECACA;
+        }
+        .resultado-carro.negativo span { color: var(--negative); }
+        .resultado-carro.negativo strong { color: var(--negative); }
+
+        .invest-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .invest-card {
+            background: #FFFFFF;
+            border-radius: 6px;
+            padding: 16px 14px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .invest-card.nubank { border-top: 3px solid var(--nubank); }
+        .invest-card.itau { border-top: 3px solid var(--itau); }
+        .invest-card.santander { border-top: 3px solid var(--santander); }
+        .invest-card.xp { border-top: 3px solid var(--xp); }
+        .invest-card.disabled {
+            opacity: 0.5;
+            background: #F8FAFC;
+        }
+        .invest-card .bank-name {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: var(--text-main);
+        }
+        .invest-card.nubank .bank-name { color: var(--nubank); }
+        .invest-card.itau .bank-name { color: var(--itau); }
+        .invest-card.santander .bank-name { color: var(--santander); }
+        .invest-card.xp .bank-name { color: var(--xp); }
+        .invest-card .money-input {
+            width: 100%;
+            max-width: 150px;
+            font-size: 15px;
+            padding: 9px 6px;
+            border-radius: 6px;
+            color: var(--green);
+            font-weight: 800;
+        }
+        .invest-card .money-input:disabled {
+            background: #F1F5F9;
+            color: #94A3B8;
+            cursor: not-allowed;
+        }
+        .invest-card .aporte-label {
+            font-size: 10px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .invest-total-box {
+            background: var(--card-bg-soft);
+            border-radius: 6px;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .invest-total-box .total-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .invest-total-box span.total-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .invest-total-box strong {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--green);
+        }
+        .invest-total-box.estourado strong { color: var(--negative); }
+        .invest-total-box.estourado {
+            background: var(--negative-light);
+            border-color: #FECACA;
+        }
+
+        .pct-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-family: 'Inter', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--accent);
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .pct-badge:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(2,132,199,0.12);
+        }
+        .pct-badge input {
+            width: 50px;
+            border: none;
+            outline: none;
+            background: transparent;
+            text-align: right;
+            font-family: 'Inter', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--accent);
+            padding: 0;
+        }
+        .pct-badge input::-webkit-outer-spin-button,
+        .pct-badge input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .pct-badge input[type=number] { -moz-appearance: textfield; }
+        .pct-badge .pct-sign {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .aviso-invest {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--negative);
+            background: var(--negative-light);
+            border: 1px solid #FECACA;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.4;
+        }
+        .aviso-invest.visivel { display: flex; }
+
+        .sugestao-texto {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-weight: 500;
+            line-height: 1.6;
+            text-align: center;
+            padding: 10px 6px 2px;
+            letter-spacing: 0.2px;
+        }
+        .sugestao-texto .sug-valor {
+            font-weight: 700;
+            color: var(--text-dim);
+        }
+
+        .resumo-linha {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .resumo-linha:last-child { border-bottom: none; }
+        .resumo-linha span { color: var(--text-main); font-weight: 600; }
+        .resumo-linha strong {
+            font-size: 16px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+        .resumo-linha.destaque-sobra {
+            background: var(--green-light);
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin-top: 6px;
+            border-bottom: none;
+        }
+        .resumo-linha.destaque-sobra span { color: var(--green-dark); }
+        .resumo-linha.destaque-sobra strong { color: var(--green-dark); }
+        .saldo-card {
+            background: var(--card-bg-soft);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            margin: 16px 0 4px;
+            border: 1px solid var(--border);
+        }
+        .saldo-card > div:first-child {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .saldo-valor {
+            font-size: 34px;
+            font-weight: 800;
+            margin-top: 8px;
+        }
+        .saldo-valor.positive { color: var(--green); }
+        .saldo-valor.negative { color: var(--negative); }
+
+        footer {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .invest-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 720px) {
+            .expenses-grid { grid-template-columns: 1fr; }
+            .carro-grid { grid-template-columns: 1fr; }
+            .invest-grid { grid-template-columns: 1fr 1fr; }
+            .payments-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 24px; }
+            .money-input { width: 105px; font-size: 13px; }
+            .payment-value { width: 130px; font-size: 14px; }
+            .carro-table .money-input { width: 80px; font-size: 11px; }
+            .saldo-valor { font-size: 28px; }
+            .month-nav .month-label { min-width: 150px; font-size: 16px; }
+            .expense-row .money-input { width: 95px; }
+            .actions-bar {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .month-nav {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 10px 12px;
+            }
+            .month-nav .month-label {
+                min-width: 120px;
+                font-size: 15px;
+                order: -1;
+                width: 100%;
+                margin-bottom: 4px;
+            }
+            .month-nav button {
+                width: 38px;
+                height: 38px;
+            }
+            .month-nav .btn-new-month {
+                font-size: 12px;
+                padding: 9px 14px;
+            }
+        }
+        @media (max-width: 420px) {
+            body { padding: 12px 10px 30px; }
+            .card { padding: 14px; }
+            .expense-row { flex-wrap: wrap; }
+            .money-input { width: 100%; max-width: 140px; }
+            .payment-cell { flex-wrap: wrap; }
+            .payment-value { width: 100%; max-width: 160px; }
+            .carro-custos-item { flex-wrap: wrap; }
+            .carro-custos-item .money-input { width: 100%; max-width: 140px; }
+            .invest-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>⚡ MARKINHOS ⚡</h1>
+        <p>👉 Digite o valor em REAIS (ex: 750) • Formata automático ao digitar</p>
+        <span class="sync-badge syncing" id="syncBadge">⏳ Conectando...</span>
+    </div>
+
+    <div class="month-nav">
+        <button id="prevMonthBtn" title="Mês anterior"><i class="fas fa-chevron-left"></i></button>
+        <span class="month-label" id="monthLabel">Outubro/2026</span>
+        <button id="nextMonthBtn" title="Próximo mês"><i class="fas fa-chevron-right"></i></button>
+        <button class="btn-new-month" id="newMonthBtn"><i class="fas fa-plus"></i> Novo Mês</button>
+    </div>
+
+    <div class="actions-bar">
+        <button class="action-btn save" id="saveMonthBtn" title="Salvar mês atual">
+            <i class="fas fa-save"></i> Salvar Mês
+        </button>
+        <button class="action-btn export" id="exportBtn" title="Exportar backup dos dados">
+            <i class="fas fa-download"></i> Exportar Dados
+        </button>
+        <button class="action-btn import" id="importBtn" title="Importar backup dos dados">
+            <i class="fas fa-upload"></i> Importar Dados
+        </button>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <i class="fas fa-money-bill-wave"></i>
+            <span class="title-text">Pagamentos do Mês</span>
+        </div>
+        <div class="payments-grid">
+            <div class="payment-cell">
+                <span class="payment-label">📌 Salário dia 5</span>
+                <input type="text" id="salario5" class="payment-value money-input" data-key="salario5" value="0,00">
+            </div>
+            <div class="payment-cell">
+                <span class="payment-label">📌 Salário dia 20</span>
+                <input type="text" id="salario20" class="payment-value money-input" data-key="salario20" value="0,00">
+            </div>
+            <div class="payment-cell">
+                <span class="payment-label">🎄 13º Salário</span>
+                <input type="text" id="decimoTerceiro" class="payment-value money-input" data-key="decimoTerceiro" value="0,00">
+            </div>
+            <div class="payment-cell">
+                <span class="payment-label">📌 Outra Renda</span>
+                <input type="text" id="outraRenda" class="payment-value money-input" data-key="outraRenda" value="0,00">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <i class="fas fa-receipt"></i>
+            <span class="title-text">Despesas do Mês</span>
+            <span class="title-right" id="totalGastoTitle">Total Gasto: R$ 0,00</span>
+        </div>
+        <div class="expenses-grid">
+            <div class="expense-col">
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE1" value="Convênio médico"><input type="text" id="convenio" class="money-input" data-key="convenio" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE2" value="Energia elétrica"><input type="text" id="energia" class="money-input" data-key="luz" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE3" value="Vivo TV + Internet"><input type="text" id="internet" class="money-input" data-key="tvInternet" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE4" value="Pernambucanas"><input type="text" id="pernambucanas" class="money-input" data-key="pernambucanas" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE5" value="Outra despesa 1"><input type="text" id="outraDespesa1" class="money-input" data-key="outra1" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE6" value="Outra despesa 2"><input type="text" id="outraDespesa2" class="money-input" data-key="outra2" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelE7" value="Outra despesa 7"><input type="text" id="outraDespesa7" class="money-input" data-key="outra7" value="0,00"></div>
+            </div>
+            <div class="expense-col">
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD1" value="Shopping / Lojas"><input type="text" id="shopping" class="money-input" data-key="shopping" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD2" value="Farmácia / Saúde"><input type="text" id="farmacia" class="money-input" data-key="saude" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD3" value="Outra despesa 3"><input type="text" id="outraDespesa3" class="money-input" data-key="outra3" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD4" value="Outra despesa 4"><input type="text" id="outraDespesa4" class="money-input" data-key="outra4" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD5" value="Outra despesa 5"><input type="text" id="outraDespesa5" class="money-input" data-key="outra5" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD6" value="Outra despesa 6"><input type="text" id="outraDespesa6" class="money-input" data-key="outra6" value="0,00"></div>
+                <div class="expense-row"><input type="text" class="expense-label-input" data-label-key="labelD7" value="Outra despesa 8"><input type="text" id="outraDespesa8" class="money-input" data-key="outra8" value="0,00"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="carro-grid">
+        <div class="card">
+            <div class="card-title"><i class="fas fa-car"></i> 🚗 Plano de Manutenção Preventiva</div>
+            <table class="carro-table">
+                <thead>
+                    <tr>
+                        <th>Grupo de Custo</th>
+                        <th>Custo (R$)</th>
+                        <th>Period. (Meses)</th>
+                        <th>Proporcional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-size:11px;">Manut. (Óleo, freios, pneus e filtros)</td>
+                        <td><input type="text" id="custoOleo" class="money-input manut-custo" data-key="manutCusto" value="1.100,00"></td>
+                        <td><input type="number" id="periodOleo" class="period-input" data-key="manutPeriod" value="12" min="1"></td>
+                        <td class="proporcional" id="manutProporcional">R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:11px;">Seguro (Valor total anual)</td>
+                        <td><input type="text" id="custoSeguro" class="money-input seguro-custo" data-key="seguroCusto" value="1.300,00"></td>
+                        <td><input type="number" id="periodSeguro" class="period-input" data-key="seguroPeriod" value="12" min="1"></td>
+                        <td class="proporcional" id="seguroProporcional">R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:11px;">Taxas Licenciamento anual</td>
+                        <td><input type="text" id="custoTaxas" class="money-input taxas-custo" data-key="taxasCusto" value="174,00"></td>
+                        <td><input type="number" id="periodTaxas" class="period-input" data-key="taxasPeriod" value="12" min="1"></td>
+                        <td class="proporcional" id="taxasProporcional">R$ 0,00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="reserva-mensal-box">
+                <span>🧮 RESERVA MENSAL</span>
+                <strong id="reservaMensalCarro">R$ 0,00</strong>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-gas-pump"></i> 💸 Custos Mensais do Carro</div>
+            <div class="carro-custos-item">
+                <span>💰 Ajuda de Custo Mensal</span>
+                <input type="text" id="ajudaCusto" class="money-input" data-key="ajudaCusto" value="234,00">
+            </div>
+            <div class="carro-custos-item">
+                <span>⛽ Gasto no Mês Comb.</span>
+                <input type="text" id="gastoCombustivel" class="money-input" data-key="gastoComb" value="175,00">
+            </div>
+            <div class="resultado-carro" id="sobraCarroBox">
+                <span>📊 Sobra:</span>
+                <strong id="sobraCarro">R$ 0,00</strong>
+            </div>
+            <div class="resultado-carro destaque" id="reservaSobraBox">
+                <span>🏁 RESERVA - SOBRA:</span>
+                <strong id="reservaSobra">R$ 0,00</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><i class="fas fa-piggy-bank"></i> 💰 Investimentos e Reservas</div>
+
+        <div class="invest-total-box" id="investTotalBox">
+            <div class="total-left">
+                <span class="total-label">💵 Total a investir neste mês</span>
+                <span class="pct-badge" title="% das receitas que vai investir">
+                    <input type="number" id="porcentagemInvestir" min="0" max="100" step="0.01" value="0">
+                    <span class="pct-sign">%</span>
+                </span>
+            </div>
+            <strong id="investTotalDisplay">R$ 0,00</strong>
+        </div>
+
+        <div class="invest-grid">
+            <div class="invest-card nubank" id="cardNubank">
+                <div class="bank-name"><i class="fas fa-university"></i> Nubank</div>
+                <input type="text" id="nubank" class="money-input" data-key="aporteNubank" value="0,00">
+                <div class="aporte-label">Aporte do mês</div>
+            </div>
+
+            <div class="invest-card itau" id="cardItau">
+                <div class="bank-name"><i class="fas fa-university"></i> Itaú</div>
+                <input type="text" id="itau" class="money-input" data-key="aporteItau" value="0,00">
+                <div class="aporte-label">Aporte do mês</div>
+            </div>
+
+            <div class="invest-card santander" id="cardSantander">
+                <div class="bank-name"><i class="fas fa-university"></i> Santander</div>
+                <input type="text" id="santander" class="money-input" data-key="aporteSantander" value="0,00">
+                <div class="aporte-label">Aporte do mês</div>
+            </div>
+
+            <div class="invest-card xp" id="cardXP">
+                <div class="bank-name"><i class="fas fa-chart-line"></i> XP Invest</div>
+                <input type="text" id="xp" class="money-input" data-key="aporteXP" value="0,00">
+                <div class="aporte-label">Aporte do mês</div>
+            </div>
+        </div>
+
+        <div class="aviso-invest" id="avisoInvest">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="avisoInvestTexto"></span>
+        </div>
+
+        <div class="sugestao-texto" id="sugestaoTexto">
+            💡 Sugestão de alocação • Reserva de Emergência → 50% <span class="sug-valor" id="sug50">R$ 0,00</span> • Investimentos → <span id="sugPctInvest">0</span>% <span class="sug-valor" id="sug30">R$ 0,00</span> <span id="sugBancos"></span> • Reserva Geral (CX Banco 100% CDI) → 20% <span class="sug-valor" id="sug20">R$ 0,00</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><i class="fas fa-chart-line"></i> 📋 Resumo do Mês Atual</div>
+        <div class="resumo-linha"><span>📥 Total de Entradas</span><strong id="totalReceitas">R$ 0,00</strong></div>
+        <div class="resumo-linha"><span>📤 Total de Despesas</span><strong id="totalDespesas">R$ 0,00</strong></div>
+        <div class="resumo-linha"><span>💰 Total Investido</span><strong id="totalInvestimentos">R$ 0,00</strong></div>
+        <div class="resumo-linha destaque-sobra"><span>💵 Sobra não investida</span><strong id="sobraNaoInvestida">R$ 0,00</strong></div>
+        <div class="saldo-card">
+            <div>💚 SALDO FINAL DO MÊS</div>
+            <div class="saldo-valor" id="saldoFinal">R$ 0,00</div>
+        </div>
+    </div>
+
+    <input type="file" id="importFileInput" accept=".json,application/json" style="display:none;">
+
+    <footer>💡 Digite o número em REAIS (ex: 750) • Formata em tempo real • Dados salvos na nuvem automaticamente</footer>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<script>
+    // ============================================================
+    // CONFIGURAÇÃO DO FIREBASE — CREDENCIAIS REAIS
+    // ============================================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyBxd8hBnfjqwskPrL8DjmciVAe9ARjzbk",
+        authDomain: "planer-markinhos.firebaseapp.com",
+        projectId: "planer-markinhos",
+        storageBucket: "planer-markinhos.firebasestorage.app",
+        messagingSenderId: "262977184013",
+        appId: "1:262977184013:web:b1e361d36519e061fc1044"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ============================================================
+    // ID ÚNICO DO USUÁRIO (isolamento por aparelho, sem login)
+    // ============================================================
+    let usuarioID = localStorage.getItem('usuario_nuvem_id');
+    if (!usuarioID) {
+        usuarioID = 'user_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('usuario_nuvem_id', usuarioID);
+    }
+    const COLECAO = 'controles_financeiros';
+
+    // ============================================================
+    // ESTADO GLOBAL
+    // ============================================================
+    const MONTHS_PT = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+    let currentMonthKey = null;
+    let allMonthsData = {};
+    let avisoTimeout = null;
+    let badgeInputFocused = false;
+    let nuvemCarregada = false;
+    let importacaoEmAndamento = false;
+    let timeoutSalvarNuvem = null;
+    let timeoutSyncOk = null;
+
+    // ============================================================
+    // INDICADOR VISUAL DE SINCRONIZAÇÃO
+    // ============================================================
+    function atualizarBadgeSync(estado, texto) {
+        const badge = document.getElementById('syncBadge');
+        if (!badge) return;
+        badge.classList.remove('syncing', 'ok', 'error');
+        badge.classList.add(estado);
+        badge.textContent = texto;
+
+        if (timeoutSyncOk) clearTimeout(timeoutSyncOk);
+        if (estado === 'ok') {
+            timeoutSyncOk = setTimeout(() => {
+                badge.textContent = '✅ Sincronizado';
+            }, 1000);
+        }
+    }
+
+    // ============================================================
+    // ESTRUTURA PADRÃO DE UM MÊS
+    // ============================================================
+    function getDefaultMonthData() {
+        return {
+            salario5: 0,
+            salario20: 0,
+            decimoTerceiro: 0,
+            outraRenda: 0,
+            convenio: 0,
+            luz: 0,
+            tvInternet: 0,
+            pernambucanas: 0,
+            outra1: 0,
+            outra2: 0,
+            shopping: 0,
+            saude: 0,
+            outra3: 0,
+            outra4: 0,
+            outra5: 0,
+            outra6: 0,
+            outra7: 0,
+            outra8: 0,
+            labelE1: 'Convênio médico',
+            labelE2: 'Energia elétrica',
+            labelE3: 'Vivo TV + Internet',
+            labelE4: 'Pernambucanas',
+            labelE5: 'Outra despesa 1',
+            labelE6: 'Outra despesa 2',
+            labelE7: 'Outra despesa 7',
+            labelD1: 'Shopping / Lojas',
+            labelD2: 'Farmácia / Saúde',
+            labelD3: 'Outra despesa 3',
+            labelD4: 'Outra despesa 4',
+            labelD5: 'Outra despesa 5',
+            labelD6: 'Outra despesa 6',
+            labelD7: 'Outra despesa 8',
+            manutCusto: 110000,
+            manutPeriod: 12,
+            seguroCusto: 130000,
+            seguroPeriod: 12,
+            taxasCusto: 17400,
+            taxasPeriod: 12,
+            ajudaCusto: 23400,
+            gastoComb: 17500,
+            aporteNubank: 0,
+            aporteItau: 0,
+            aporteSantander: 0,
+            aporteXP: 0,
+            pctBadge: 0
+        };
+    }
+
+    function makeMonthKey(year, monthIndex) {
+        return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+    }
+
+    function parseMonthKey(key) {
+        const parts = key.split('-');
+        return { year: parseInt(parts[0]), monthIndex: parseInt(parts[1]) - 1 };
+    }
+
+    function formatMonthLabel(key) {
+        const p = parseMonthKey(key);
+        return `${MONTHS_PT[p.monthIndex]}/${p.year}`;
+    }
+
+    function getCurrentData() {
+        if (!allMonthsData[currentMonthKey]) {
+            allMonthsData[currentMonthKey] = getDefaultMonthData();
+        }
+        return allMonthsData[currentMonthKey];
+    }
+
+    // ============================================================
+    // CONVERSÃO CENTAVOS <-> DISPLAY
+    // ============================================================
+    function centsToDisplay(cents) {
+        let negativo = cents < 0;
+        let absoluto = Math.abs(cents);
+        let reais = Math.floor(absoluto / 100);
+        let centavos = absoluto % 100;
+        let valorFormatado = `${reais.toLocaleString('pt-BR')},${centavos.toString().padStart(2, '0')}`;
+        return negativo ? `-${valorFormatado}` : valorFormatado;
+    }
+
+    function realStringToCents(str) {
+        if (!str) return 0;
+        let cleaned = str.replace(/[^\d,-]/g, '');
+        let negativo = cleaned.includes('-');
+        cleaned = cleaned.replace(/-/g, '');
+        cleaned = cleaned.replace(',', '.');
+        let numberValue = parseFloat(cleaned);
+        if (isNaN(numberValue)) return 0;
+        let cents = Math.round(numberValue * 100);
+        return negativo ? -cents : cents;
+    }
+
+    function formatMoneyOnBlur(input) {
+        let rawValue = input.value;
+        let cents = realStringToCents(rawValue);
+        input.value = centsToDisplay(cents);
+        return cents;
+    }
+
+    // ============================================================
+    // MÁSCARA DE MOEDA DINÂMICA (estilo caixa eletrônico)
+    // TRAVA: ignora o campo de % e os campos de período.
+    // ============================================================
+    function formatarMoeda(input) {
+        if (input.id === 'porcentagemInvestir') return;
+        if (input.classList.contains('period-input')) return;
+
+        let digitos = input.value.replace(/\D/g, '');
+        if (digitos === '') {
+            input.value = '';
+            return;
+        }
+        digitos = digitos.substring(0, 13);
+        while (digitos.length < 3) {
+            digitos = '0' + digitos;
+        }
+        let centavos = digitos.slice(-2);
+        let reais = digitos.slice(0, -2);
+        reais = reais.replace(/^0+(?=\d)/, '');
+        if (reais === '') reais = '0';
+        let reaisFormatado = parseInt(reais, 10).toLocaleString('pt-BR');
+        input.value = `${reaisFormatado},${centavos}`;
+    }
+
+    // ============================================================
+    // CÁLCULOS DO CARRO
+    // ============================================================
+    function getProporcional(data, custoKey, periodKey) {
+        let custo = data[custoKey] || 0;
+        let period = data[periodKey] || 1;
+        if (period <= 0) period = 1;
+        return Math.round(custo / period);
+    }
+
+    function getReservaMensalCarro(data) {
+        let manut = getProporcional(data, 'manutCusto', 'manutPeriod');
+        let seguro = getProporcional(data, 'seguroCusto', 'seguroPeriod');
+        let taxas = getProporcional(data, 'taxasCusto', 'taxasPeriod');
+        return manut + seguro + taxas;
+    }
+
+    function getSobraCarro(data) {
+        let ajuda = data.ajudaCusto || 0;
+        let gasto = data.gastoComb || 0;
+        return ajuda - gasto;
+    }
+
+    function getReservaSobraCarro(data) {
+        let reserva = getReservaMensalCarro(data);
+        let sobra = getSobraCarro(data);
+        return reserva - sobra;
+    }
+
+    // ============================================================
+    // CÁLCULOS GERAIS
+    // ============================================================
+    function getTotalReceitasCents(data) {
+        return (data.salario5 || 0) + (data.salario20 || 0) + (data.decimoTerceiro || 0) + (data.outraRenda || 0);
+    }
+
+    function getDespesasFixasCents(data) {
+        return (data.convenio || 0) + (data.luz || 0) + (data.tvInternet || 0) +
+               (data.pernambucanas || 0) + (data.outra1 || 0) + (data.outra2 || 0) +
+               (data.outra7 || 0) +
+               (data.shopping || 0) + (data.saude || 0) + (data.outra3 || 0) +
+               (data.outra4 || 0) + (data.outra5 || 0) + (data.outra6 || 0) +
+               (data.outra8 || 0);
+    }
+
+    function getTotalDespesasCents(data) {
+        let despesasFixas = getDespesasFixasCents(data);
+        let carroLiquido = getReservaSobraCarro(data);
+        return despesasFixas + carroLiquido;
+    }
+
+    function getSobraCents(data) {
+        return getTotalReceitasCents(data) - getTotalDespesasCents(data);
+    }
+
+    function getInvestidoCents(data) {
+        return (data.aporteNubank || 0) + (data.aporteItau || 0) + (data.aporteSantander || 0) + (data.aporteXP || 0);
+    }
+
+    function getSobraNaoInvestidaCents(data) {
+        return getSobraCents(data) - getInvestidoCents(data);
+    }
+
+    function getTotalAlvoCents(data) {
+        const receitas = getTotalReceitasCents(data);
+        const pct = data.pctBadge || 0;
+        return Math.round(receitas * pct / 100);
+    }
+
+    // ============================================================
+    // TRAVA DE INVESTIMENTOS
+    // ============================================================
+    function mostrarAviso(texto) {
+        const aviso = document.getElementById('avisoInvest');
+        const avisoTexto = document.getElementById('avisoInvestTexto');
+        avisoTexto.textContent = texto;
+        aviso.classList.add('visivel');
+        if (avisoTimeout) clearTimeout(avisoTimeout);
+        avisoTimeout = setTimeout(() => {
+            aviso.classList.remove('visivel');
+        }, 3000);
+    }
+
+    function clampAporte(data, bankKey) {
+        const alvo = getTotalAlvoCents(data);
+        const todasKeys = ['aporteNubank', 'aporteItau', 'aporteSantander', 'aporteXP'];
+        const outrasKeys = todasKeys.filter(k => k !== bankKey);
+        const somaOutras = outrasKeys.reduce((acc, k) => acc + (data[k] || 0), 0);
+        const limite = Math.max(0, alvo - somaOutras);
+        const atual = data[bankKey] || 0;
+        if (atual > limite) {
+            data[bankKey] = limite;
+            mostrarAviso(`⚠️ Aporte ajustado ao limite do total definido (R$ ${centsToDisplay(limite)}).`);
+            return true;
+        }
+        return false;
+    }
+
+    function atualizarEstadoCamposInvest() {
+        const data = getCurrentData();
+        const alvo = getTotalAlvoCents(data);
+        const desabilitar = alvo <= 0;
+
+        ['Nubank', 'Itau', 'Santander', 'XP'].forEach(bank => {
+            const card = document.getElementById('card' + bank);
+            const input = document.querySelector(`.invest-card input[data-key="aporte${bank}"]`);
+            if (desabilitar) {
+                card.classList.add('disabled');
+                input.disabled = true;
+                input.placeholder = 'Defina o % acima';
+            } else {
+                card.classList.remove('disabled');
+                input.disabled = false;
+                input.placeholder = '';
+            }
+        });
+    }
+
+    // ============================================================
+    // ATUALIZAÇÃO DA INTERFACE
+    // ============================================================
+    function updateAllCalculations() {
+        let data = getCurrentData();
+
+        let manutProp = getProporcional(data, 'manutCusto', 'manutPeriod');
+        let seguroProp = getProporcional(data, 'seguroCusto', 'seguroPeriod');
+        let taxasProp = getProporcional(data, 'taxasCusto', 'taxasPeriod');
+
+        document.getElementById('manutProporcional').innerHTML = `R$ ${centsToDisplay(manutProp)}`;
+        document.getElementById('seguroProporcional').innerHTML = `R$ ${centsToDisplay(seguroProp)}`;
+        document.getElementById('taxasProporcional').innerHTML = `R$ ${centsToDisplay(taxasProp)}`;
+
+        let reservaMensal = getReservaMensalCarro(data);
+        document.getElementById('reservaMensalCarro').innerHTML = `R$ ${centsToDisplay(reservaMensal)}`;
+
+        let sobraCarro = getSobraCarro(data);
+        let sobraCarroEl = document.getElementById('sobraCarro');
+        sobraCarroEl.innerHTML = `R$ ${centsToDisplay(sobraCarro)}`;
+        sobraCarroEl.style.color = sobraCarro < 0 ? '#B91C1C' : '#15803D';
+
+        let reservaSobra = getReservaSobraCarro(data);
+        let reservaSobraEl = document.getElementById('reservaSobra');
+        reservaSobraEl.innerHTML = `R$ ${centsToDisplay(reservaSobra)}`;
+        let reservaSobraBox = document.getElementById('reservaSobraBox');
+        if (reservaSobra < 0) {
+            reservaSobraEl.style.color = '#B91C1C';
+            reservaSobraBox.classList.add('negativo');
+        } else {
+            reservaSobraEl.style.color = '#15803D';
+            reservaSobraBox.classList.remove('negativo');
+        }
+
+        const totalGasto = getDespesasFixasCents(data);
+        document.getElementById('totalGastoTitle').textContent = `Total Gasto: R$ ${centsToDisplay(totalGasto)}`;
+
+        const investido = getInvestidoCents(data);
+        const alvo = getTotalAlvoCents(data);
+        const sobraNaoInvestida = getSobraNaoInvestidaCents(data);
+
+        document.getElementById('investTotalDisplay').innerHTML = `R$ ${centsToDisplay(alvo)}`;
+        const totalBox = document.getElementById('investTotalBox');
+        if (investido > alvo && alvo > 0) {
+            totalBox.classList.add('estourado');
+        } else {
+            totalBox.classList.remove('estourado');
+        }
+
+        if (!badgeInputFocused) {
+            const badgeInput = document.getElementById('porcentagemInvestir');
+            const pct = data.pctBadge || 0;
+            badgeInput.value = pct;
+        }
+
+        const v50 = Math.round(alvo * 0.50);
+        const vInv = alvo;
+        const v20 = Math.round(alvo * 0.20);
+        document.getElementById('sug50').textContent = `R$ ${centsToDisplay(v50)}`;
+        document.getElementById('sug30').textContent = `R$ ${centsToDisplay(vInv)}`;
+        document.getElementById('sugPctInvest').textContent = (data.pctBadge || 0);
+        document.getElementById('sug20').textContent = `R$ ${centsToDisplay(v20)}`;
+
+        const valorBase = Math.floor(vInv / 4);
+        const sobraCentavos = vInv - (valorBase * 4);
+        const vNubank = valorBase;
+        const vItau = valorBase;
+        const vSantander = valorBase;
+        const vXP = valorBase + sobraCentavos;
+        const sugBancosEl = document.getElementById('sugBancos');
+        if (sugBancosEl) {
+            sugBancosEl.innerHTML =
+                `(Sugerido por banco: ` +
+                `Nubank <span class="sug-valor">R$ ${centsToDisplay(vNubank)}</span> | ` +
+                `Itaú <span class="sug-valor">R$ ${centsToDisplay(vItau)}</span> | ` +
+                `Santander <span class="sug-valor">R$ ${centsToDisplay(vSantander)}</span> | ` +
+                `XP Invest <span class="sug-valor">R$ ${centsToDisplay(vXP)}</span>)`;
+        }
+
+        document.getElementById('totalReceitas').innerHTML = `R$ ${centsToDisplay(getTotalReceitasCents(data))}`;
+        document.getElementById('totalDespesas').innerHTML = `R$ ${centsToDisplay(getTotalDespesasCents(data))}`;
+        document.getElementById('totalInvestimentos').innerHTML = `R$ ${centsToDisplay(investido)}`;
+        document.getElementById('sobraNaoInvestida').innerHTML = `R$ ${centsToDisplay(sobraNaoInvestida)}`;
+
+        let saldoFinalEl = document.getElementById('saldoFinal');
+        saldoFinalEl.innerHTML = `R$ ${centsToDisplay(sobraNaoInvestida)}`;
+        if (sobraNaoInvestida >= 0) {
+            saldoFinalEl.classList.add('positive');
+            saldoFinalEl.classList.remove('negative');
+        } else {
+            saldoFinalEl.classList.add('negative');
+            saldoFinalEl.classList.remove('positive');
+        }
+
+        atualizarEstadoCamposInvest();
+    }
+
+    // ============================================================
+    // PREENCHER CAMPOS COM DADOS DO MÊS
+    // ============================================================
+    function fillInputsFromData() {
+        let data = getCurrentData();
+
+        document.querySelectorAll('.money-input').forEach(input => {
+            let key = input.getAttribute('data-key');
+            if (key && data[key] !== undefined) {
+                input.value = centsToDisplay(data[key]);
+            }
+        });
+
+        document.querySelectorAll('.period-input').forEach(input => {
+            let key = input.getAttribute('data-key');
+            if (key && data[key] !== undefined) {
+                input.value = data[key];
+            }
+        });
+
+        document.querySelectorAll('.expense-label-input').forEach(input => {
+            let key = input.getAttribute('data-label-key');
+            if (key && data[key] !== undefined) {
+                input.value = data[key];
+            }
+        });
+
+        document.getElementById('porcentagemInvestir').value = data.pctBadge || 0;
+
+        document.getElementById('monthLabel').textContent = formatMonthLabel(currentMonthKey);
+    }
+
+    // ============================================================
+    // EVENTOS DOS CAMPOS MONETÁRIOS
+    // ============================================================
+    function setupMoneyInputs() {
+        document.querySelectorAll('.money-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                setTimeout(() => {
+                    this.select();
+                }, 0);
+            });
+
+            input.addEventListener('keydown', function(e) {
+                const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'Home', 'End'];
+                if (allowed.includes(e.key)) return;
+                if (e.ctrlKey || e.metaKey) return;
+                if (!/^[0-9]$/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+
+            input.addEventListener('input', function() {
+                formatarMoeda(this);
+            });
+
+            input.addEventListener('blur', function() {
+                let cents = formatMoneyOnBlur(this);
+                let key = this.getAttribute('data-key');
+                let data = getCurrentData();
+                if (!key || !data.hasOwnProperty(key)) {
+                    updateAllCalculations();
+                    return;
+                }
+
+                data[key] = cents;
+
+                const isAporte = ['aporteNubank', 'aporteItau', 'aporteSantander', 'aporteXP'].includes(key);
+                if (isAporte) {
+                    const foiClampado = clampAporte(data, key);
+                    if (foiClampado) {
+                        this.value = centsToDisplay(data[key]);
+                    }
+                }
+
+                updateAllCalculations();
+                saveAllToLocal();
+                salvarDadosNaNuvem();
+            });
+        });
+
+        document.querySelectorAll('.period-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                setTimeout(() => {
+                    this.select();
+                }, 0);
+            });
+
+            input.addEventListener('input', function() {
+                let key = this.getAttribute('data-key');
+                let val = parseInt(this.value);
+                if (isNaN(val) || val < 1) {
+                    val = 1;
+                    this.value = val;
+                }
+                let data = getCurrentData();
+                if (key && data.hasOwnProperty(key)) {
+                    data[key] = val;
+                }
+                updateAllCalculations();
+                saveAllToLocal();
+                salvarDadosNaNuvem();
+            });
+        });
+    }
+
+    // ============================================================
+    // EVENTOS DOS LABELS EDITÁVEIS
+    // ============================================================
+    function setupLabelInputs() {
+        document.querySelectorAll('.expense-label-input').forEach(input => {
+            input.addEventListener('input', function() {
+                let key = this.getAttribute('data-label-key');
+                let data = getCurrentData();
+                if (key) {
+                    data[key] = this.value;
+                    saveAllToLocal();
+                    salvarDadosNaNuvem();
+                }
+            });
+        });
+    }
+
+    // ============================================================
+    // EVENTOS DO BADGE DE %
+    // ============================================================
+    function setupBadgeInput() {
+        const badgeInput = document.getElementById('porcentagemInvestir');
+
+        badgeInput.addEventListener('focus', () => {
+            badgeInputFocused = true;
+            setTimeout(() => {
+                badgeInput.select();
+            }, 0);
+        });
+
+        badgeInput.addEventListener('input', () => {
+            let val = parseFloat(badgeInput.value);
+            if (isNaN(val)) val = 0;
+            val = Math.min(100, Math.max(0, val));
+
+            const data = getCurrentData();
+            data.pctBadge = val;
+
+            updateAllCalculations();
+            saveAllToLocal();
+            salvarDadosNaNuvem();
+        });
+
+        badgeInput.addEventListener('blur', () => {
+            badgeInputFocused = false;
+            let val = parseFloat(badgeInput.value);
+            if (isNaN(val)) val = 0;
+            val = Math.min(100, Math.max(0, val));
+            val = Math.round(val * 100) / 100;
+
+            const data = getCurrentData();
+            data.pctBadge = val;
+            badgeInput.value = val;
+
+            updateAllCalculations();
+            saveAllToLocal();
+            salvarDadosNaNuvem();
+        });
+
+        badgeInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                badgeInput.blur();
+            }
+        });
+
+        badgeInput.addEventListener('keydown', function(e) {
+            const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'Home', 'End', '.', ','];
+            if (allowed.includes(e.key)) return;
+            if (e.ctrlKey || e.metaKey) return;
+            if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    // ============================================================
+    // NAVEGAÇÃO DE MÊS
+    // ============================================================
+    function setupMonthNavigation() {
+        function irParaMes(newKey) {
+            currentMonthKey = newKey;
+            if (!allMonthsData[currentMonthKey]) {
+                allMonthsData[currentMonthKey] = getDefaultMonthData();
+            }
+            fillInputsFromData();
+            updateAllCalculations();
+            saveAllToLocal();
+            salvarDadosNaNuvem();
+        }
+
+        document.getElementById('prevMonthBtn').addEventListener('click', () => {
+            let p = parseMonthKey(currentMonthKey);
+            let newMonth = p.monthIndex - 1;
+            let newYear = p.year;
+            if (newMonth < 0) { newMonth = 11; newYear--; }
+            irParaMes(makeMonthKey(newYear, newMonth));
+        });
+
+        document.getElementById('nextMonthBtn').addEventListener('click', () => {
+            let p = parseMonthKey(currentMonthKey);
+            let newMonth = p.monthIndex + 1;
+            let newYear = p.year;
+            if (newMonth > 11) { newMonth = 0; newYear++; }
+            irParaMes(makeMonthKey(newYear, newMonth));
+        });
+
+        document.getElementById('newMonthBtn').addEventListener('click', () => {
+            let p = parseMonthKey(currentMonthKey);
+            let newMonth = p.monthIndex + 1;
+            let newYear = p.year;
+            if (newMonth > 11) { newMonth = 0; newYear++; }
+            irParaMes(makeMonthKey(newYear, newMonth));
+            alert(`✅ Novo mês criado: ${formatMonthLabel(currentMonthKey)}`);
+        });
+    }
+
+    // ============================================================
+    // SALVAR MÊS
+    // ============================================================
+    function setupSaveButton() {
+        document.getElementById('saveMonthBtn').addEventListener('click', () => {
+            saveAllToLocal();
+            salvarDadosNaNuvem();
+            alert(`✅ Mês ${formatMonthLabel(currentMonthKey)} salvo!`);
+        });
+    }
+
+    // ============================================================
+    // EXPORTAR DADOS
+    // ============================================================
+    function setupExportButton() {
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            try {
+                saveAllToLocal();
+
+                const backup = {
+                    markinhos_months: allMonthsData,
+                    markinhos_current: currentMonthKey,
+                    usuario_nuvem_id: usuarioID
+                };
+
+                const jsonString = JSON.stringify(backup, null, 2);
+                const blob = new Blob([jsonString], { type: 'application/json;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+
+                const agora = new Date();
+                const timestamp =
+                    agora.getFullYear() + '-' +
+                    String(agora.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(agora.getDate()).padStart(2, '0') + '_' +
+                    String(agora.getHours()).padStart(2, '0') + '-' +
+                    String(agora.getMinutes()).padStart(2, '0') + '-' +
+                    String(agora.getSeconds()).padStart(2, '0');
+                const nomeArquivo = `markinhos_backup_${timestamp}.json`;
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = nomeArquivo;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+                alert(`✅ Backup exportado com sucesso!\n\n📁 Arquivo: ${nomeArquivo}`);
+            } catch (e) {
+                console.error(e);
+                alert('❌ Erro ao exportar os dados. Veja o console para detalhes.');
+            }
+        });
+    }
+
+    // ============================================================
+    // IMPORTAR DADOS
+    // ============================================================
+    function setupImportButton() {
+        const importBtn = document.getElementById('importBtn');
+        const fileInput = document.getElementById('importFileInput');
+
+        importBtn.addEventListener('click', () => {
+            fileInput.value = '';
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const confirmar = confirm(
+                `⚠️ ATENÇÃO!\n\n` +
+                `Você está prestes a importar o arquivo:\n"${file.name}"\n\n` +
+                `Isso vai SUBSTITUIR todos os dados atuais do planer pelos dados do backup.\n\n` +
+                `Deseja continuar?`
+            );
+
+            if (!confirmar) {
+                fileInput.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                try {
+                    const conteudo = e.target.result;
+                    const parsed = JSON.parse(conteudo);
+
+                    if (!parsed || typeof parsed !== 'object') {
+                        throw new Error('Arquivo inválido: não é um objeto JSON.');
+                    }
+
+                    let meses;
+                    let mesAtual;
+
+                    if (parsed.markinhos_months && typeof parsed.markinhos_months === 'object') {
+                        meses = parsed.markinhos_months;
+                        mesAtual = parsed.markinhos_current || null;
+                    } else {
+                        meses = parsed;
+                        mesAtual = null;
+                    }
+
+                    const chavesValidas = Object.keys(meses).filter(k => /^\d{4}-\d{2}$/.test(k));
+                    if (chavesValidas.length === 0) {
+                        throw new Error('Nenhum mês válido encontrado no arquivo.');
+                    }
+
+                    let mesFinal;
+                    if (mesAtual && meses[mesAtual]) {
+                        mesFinal = mesAtual;
+                    } else {
+                        const chavesOrdenadas = Object.keys(meses).sort();
+                        mesFinal = chavesOrdenadas[chavesOrdenadas.length - 1];
+                    }
+
+                    localStorage.setItem('markinhos_months', JSON.stringify(meses));
+                    localStorage.setItem('markinhos_current', mesFinal);
+
+                    alert(
+                        `✅ Backup importado com sucesso!\n\n` +
+                        `📅 Meses restaurados: ${chavesValidas.length}\n` +
+                        `📌 Mês atual: ${mesFinal}\n\n` +
+                        `A página será recarregada agora.`
+                    );
+
+                    localStorage.setItem('backup_importado', 'true');
+                    window.location.reload();
+                } catch (err) {
+                    console.error(err);
+                    alert('❌ Erro ao importar o arquivo:\n\n' + err.message + '\n\nVerifique se é um backup válido gerado pelo Markinhos.');
+                    fileInput.value = '';
+                }
+            };
+
+            reader.onerror = () => {
+                alert('❌ Erro ao ler o arquivo. Tente novamente.');
+                fileInput.value = '';
+            };
+
+            reader.readAsText(file, 'UTF-8');
+        });
+    }
+
+    // ============================================================
+    // LOCALSTORAGE
+    // ============================================================
+    function saveAllToLocal() {
+        try {
+            localStorage.setItem('markinhos_months', JSON.stringify(allMonthsData));
+            localStorage.setItem('markinhos_current', currentMonthKey);
+        } catch (e) { }
+    }
+
+    function loadAllFromLocal() {
+        try {
+            const saved = localStorage.getItem('markinhos_months');
+            if (saved) {
+                allMonthsData = JSON.parse(saved);
+            }
+            const savedCurrent = localStorage.getItem('markinhos_current');
+            if (savedCurrent && allMonthsData[savedCurrent]) {
+                currentMonthKey = savedCurrent;
+            }
+        } catch (e) { }
+
+        if (!currentMonthKey) {
+            const now = new Date();
+            currentMonthKey = makeMonthKey(now.getFullYear(), now.getMonth());
+        }
+        if (!allMonthsData[currentMonthKey]) {
+            allMonthsData[currentMonthKey] = getDefaultMonthData();
+        }
+
+        const defaults = getDefaultMonthData();
+        Object.keys(allMonthsData).forEach(k => {
+            const d = allMonthsData[k];
+            Object.keys(defaults).forEach(dk => {
+                if (d[dk] === undefined) {
+                    d[dk] = defaults[dk];
+                }
+            });
+            delete d.pctNubank;
+            delete d.pctItau;
+            delete d.pctSantander;
+            delete d.globalPct;
+            delete d.saldoNubank;
+            delete d.saldoItau;
+            delete d.saldoSantander;
+        });
+    }
+
+    // ============================================================
+    // SALVAR DADOS NA NUVEM (FIRESTORE)
+    // ============================================================
+    function salvarDadosNaNuvem() {
+        if (!nuvemCarregada) return;
+        if (timeoutSalvarNuvem) clearTimeout(timeoutSalvarNuvem);
+        atualizarBadgeSync('syncing', '⏳ Salvando...');
+        timeoutSalvarNuvem = setTimeout(() => {
+            const data = getCurrentData();
+
+            const dadosMes = {
+                salarioDia5: data.salario5 || 0,
+                salarioDia20: data.salario20 || 0,
+                decimoTerceiro: data.decimoTerceiro || 0,
+                outraRenda: data.outraRenda || 0,
+
+                convenio: data.convenio || 0,
+                energia: data.luz || 0,
+                internet: data.tvInternet || 0,
+                pernambucanas: data.pernambucanas || 0,
+                shopping: data.shopping || 0,
+                farmacia: data.saude || 0,
+                outraDespesa1: data.outra1 || 0,
+                outraDespesa2: data.outra2 || 0,
+                outraDespesa3: data.outra3 || 0,
+                outraDespesa4: data.outra4 || 0,
+                outraDespesa5: data.outra5 || 0,
+                outraDespesa6: data.outra6 || 0,
+                outraDespesa7: data.outra7 || 0,
+                outraDespesa8: data.outra8 || 0,
+
+                labelE1: data.labelE1 || '',
+                labelE2: data.labelE2 || '',
+                labelE3: data.labelE3 || '',
+                labelE4: data.labelE4 || '',
+                labelE5: data.labelE5 || '',
+                labelE6: data.labelE6 || '',
+                labelE7: data.labelE7 || '',
+                labelD1: data.labelD1 || '',
+                labelD2: data.labelD2 || '',
+                labelD3: data.labelD3 || '',
+                labelD4: data.labelD4 || '',
+                labelD5: data.labelD5 || '',
+                labelD6: data.labelD6 || '',
+                labelD7: data.labelD7 || '',
+
+                custoOleo: data.manutCusto || 0,
+                periodOleo: data.manutPeriod || 12,
+                custoSeguro: data.seguroCusto || 0,
+                periodSeguro: data.seguroPeriod || 12,
+                custoTaxas: data.taxasCusto || 0,
+                periodTaxas: data.taxasPeriod || 12,
+                ajudaCusto: data.ajudaCusto || 0,
+                gastoCombustivel: data.gastoComb || 0,
+
+                porcentagemInvestir: data.pctBadge || 0,
+                nubank: data.aporteNubank || 0,
+                itau: data.aporteItau || 0,
+                santander: data.aporteSantander || 0,
+                xp: data.aporteXP || 0,
+
+                currentMonthKey: currentMonthKey,
+                monthsData: allMonthsData,
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection(COLECAO).doc(usuarioID).set(dadosMes, { merge: true })
+                .then(() => {
+                    console.log('☁️ Dados salvos no Firestore com sucesso. User:', usuarioID);
+                    atualizarBadgeSync('ok', '✅ Sincronizado');
+                })
+                .catch((error) => {
+                    console.error('❌ Erro ao salvar no Firestore:', error);
+                    atualizarBadgeSync('error', '❌ Erro ao salvar');
+                });
+        }, 500);
+    }
+
+    // ============================================================
+    // CARREGAR DADOS DA NUVEM (FIRESTORE)
+    // ============================================================
+    function carregarDadosDaNuvem() {
+        atualizarBadgeSync('syncing', '⏳ Carregando...');
+        return db.collection(COLECAO).doc(usuarioID).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const dados = doc.data();
+
+                    if (dados && dados.monthsData && typeof dados.monthsData === 'object') {
+                        allMonthsData = dados.monthsData;
+                    }
+                    if (dados && dados.currentMonthKey && allMonthsData[dados.currentMonthKey]) {
+                        currentMonthKey = dados.currentMonthKey;
+                    }
+
+                    const data = getCurrentData();
+
+                    if (dados.salarioDia5 !== undefined) data.salario5 = dados.salarioDia5;
+                    if (dados.salarioDia20 !== undefined) data.salario20 = dados.salarioDia20;
+                    if (dados.decimoTerceiro !== undefined) data.decimoTerceiro = dados.decimoTerceiro;
+                    if (dados.outraRenda !== undefined) data.outraRenda = dados.outraRenda;
+
+                    if (dados.convenio !== undefined) data.convenio = dados.convenio;
+                    if (dados.energia !== undefined) data.luz = dados.energia;
+                    if (dados.internet !== undefined) data.tvInternet = dados.internet;
+                    if (dados.pernambucanas !== undefined) data.pernambucanas = dados.pernambucanas;
+                    if (dados.shopping !== undefined) data.shopping = dados.shopping;
+                    if (dados.farmacia !== undefined) data.saude = dados.farmacia;
+                    if (dados.outraDespesa1 !== undefined) data.outra1 = dados.outraDespesa1;
+                    if (dados.outraDespesa2 !== undefined) data.outra2 = dados.outraDespesa2;
+                    if (dados.outraDespesa3 !== undefined) data.outra3 = dados.outraDespesa3;
+                    if (dados.outraDespesa4 !== undefined) data.outra4 = dados.outraDespesa4;
+                    if (dados.outraDespesa5 !== undefined) data.outra5 = dados.outraDespesa5;
+                    if (dados.outraDespesa6 !== undefined) data.outra6 = dados.outraDespesa6;
+                    if (dados.outraDespesa7 !== undefined) data.outra7 = dados.outraDespesa7;
+                    if (dados.outraDespesa8 !== undefined) data.outra8 = dados.outraDespesa8;
+
+                    if (dados.labelE1 !== undefined) data.labelE1 = dados.labelE1;
+                    if (dados.labelE2 !== undefined) data.labelE2 = dados.labelE2;
+                    if (dados.labelE3 !== undefined) data.labelE3 = dados.labelE3;
+                    if (dados.labelE4 !== undefined) data.labelE4 = dados.labelE4;
+                    if (dados.labelE5 !== undefined) data.labelE5 = dados.labelE5;
+                    if (dados.labelE6 !== undefined) data.labelE6 = dados.labelE6;
+                    if (dados.labelE7 !== undefined) data.labelE7 = dados.labelE7;
+                    if (dados.labelD1 !== undefined) data.labelD1 = dados.labelD1;
+                    if (dados.labelD2 !== undefined) data.labelD2 = dados.labelD2;
+                    if (dados.labelD3 !== undefined) data.labelD3 = dados.labelD3;
+                    if (dados.labelD4 !== undefined) data.labelD4 = dados.labelD4;
+                    if (dados.labelD5 !== undefined) data.labelD5 = dados.labelD5;
+                    if (dados.labelD6 !== undefined) data.labelD6 = dados.labelD6;
+                    if (dados.labelD7 !== undefined) data.labelD7 = dados.labelD7;
+
+                    if (dados.custoOleo !== undefined) data.manutCusto = dados.custoOleo;
+                    if (dados.periodOleo !== undefined) data.manutPeriod = dados.periodOleo;
+                    if (dados.custoSeguro !== undefined) data.seguroCusto = dados.custoSeguro;
+                    if (dados.periodSeguro !== undefined) data.seguroPeriod = dados.periodSeguro;
+                    if (dados.custoTaxas !== undefined) data.taxasCusto = dados.custoTaxas;
+                    if (dados.periodTaxas !== undefined) data.taxasPeriod = dados.periodTaxas;
+                    if (dados.ajudaCusto !== undefined) data.ajudaCusto = dados.ajudaCusto;
+                    if (dados.gastoCombustivel !== undefined) data.gastoComb = dados.gastoCombustivel;
+
+                    if (dados.porcentagemInvestir !== undefined) data.pctBadge = dados.porcentagemInvestir;
+                    if (dados.nubank !== undefined) data.aporteNubank = dados.nubank;
+                    if (dados.itau !== undefined) data.aporteItau = dados.itau;
+                    if (dados.santander !== undefined) data.aporteSantander = dados.santander;
+                    if (dados.xp !== undefined) data.aporteXP = dados.xp;
+
+                    saveAllToLocal();
+                    console.log('☁️ Dados carregados do Firestore. User:', usuarioID);
+                    atualizarBadgeSync('ok', '✅ Sincronizado');
+                } else {
+                    console.log('☁️ Nenhum dado na nuvem ainda para o User:', usuarioID);
+                    atualizarBadgeSync('ok', '✅ Sincronizado');
+                }
+                nuvemCarregada = true;
+            })
+            .catch((error) => {
+                console.error('❌ Erro ao carregar do Firestore:', error);
+                atualizarBadgeSync('error', '❌ Erro de conexão');
+                nuvemCarregada = true;
+            });
+    }
+
+    // ============================================================
+    // INICIALIZAÇÃO
+    // ============================================================
+    function init() {
+        loadAllFromLocal();
+        fillInputsFromData();
+        setupMoneyInputs();
+        setupLabelInputs();
+        setupBadgeInput();
+        setupMonthNavigation();
+        setupSaveButton();
+        setupExportButton();
+        setupImportButton();
+        updateAllCalculations();
+    }
+
+    window.onload = function() {
+    init();
+    
+    // Se acabamos de importar, NÃO carrega da nuvem para não sobrescrever
+    if (localStorage.getItem('backup_importado') === 'true') {
+        localStorage.removeItem('backup_importado');
+        console.log("☁️ Backup importado. Ignorando carga da nuvem nesta sessão.");
+        fillInputsFromData();
+        updateAllCalculations();
+        return;
+    }
+
+    carregarDadosDaNuvem().then(() => {
+        fillInputsFromData();
+        updateAllCalculations();
+    });
+};
+</script>
+</body>
+</html>
